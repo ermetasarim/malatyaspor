@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Malatya Yeşilyurtspor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@560;700&family=Outfit:wght@380;500;640&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #17141a;
+    --paper: #f3efe8;
+    --card: #fbf8f4;
+    --line: rgba(23,20,26,.1);
+    --muted: #6f6872;
+    --live: #d10f1a;
+    --ys: #7b1c2b;
+    --gold: #e2b15a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Outfit, "Segoe UI", sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(820px 260px at 50% -80px, rgba(226,177,90,.34), transparent 62%),
+      var(--paper);
+  }
+  .wrap { width: min(980px, calc(100% - 28px)); margin: 0 auto; padding: 28px 0 56px; }
+  header { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin-bottom: 18px; }
+  header h1 { margin: 0; font-family: "Barlow Condensed", sans-serif; font-size: 44px; letter-spacing: .02em; line-height: .9; }
+  header p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
+  .clock { text-align: right; }
+  .clock b { display: block; font-variant-numeric: tabular-nums; font-size: 22px; font-weight: 500; }
+  .clock span { color: var(--muted); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
+  .head {
+    display: flex; justify-content: space-between; align-items: center;
+    color: #fff; padding: 16px 20px; border-radius: 18px 18px 0 0;
+    background: linear-gradient(100deg, var(--ys), #9d3142 74%);
+  }
+  .head h2 { margin: 0; font-family: "Barlow Condensed", sans-serif; font-size: 34px; letter-spacing: .03em; }
+  .head small { display: block; opacity: .78; letter-spacing: .12em; text-transform: uppercase; font-size: 12px; margin-top: 2px; }
+  .mark { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; border: 1.5px solid rgba(255,255,255,.45); color: var(--gold); font-weight: 700; }
+  .panel { background: var(--card); border: 1px solid var(--line); border-top: 0; border-radius: 0 0 18px 18px; }
+  .block { padding: 18px 20px 8px; }
+  .label { display: flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--live); animation: pulse 1.4s infinite; }
+  .dot.off { background: #9aa1ad; animation: none; }
+  @keyframes pulse { 70% { box-shadow: 0 0 0 8px rgba(209,15,26,0); } }
+  .scoreboard { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center; padding: 16px 0 6px; }
+  .team { font-size: 22px; font-weight: 500; }
+  .team.away { text-align: right; }
+  .score { font-family: "Barlow Condensed", sans-serif; font-size: 84px; line-height: .85; color: var(--ys); text-align: center; }
+  .min { margin-top: 6px; text-align: center; letter-spacing: .14em; text-transform: uppercase; font-size: 13px; font-weight: 640; color: var(--live); }
+  .min.idle { color: var(--muted); }
+  .sub { margin: 0 0 14px; color: var(--muted); font-size: 13px; }
+  .split { height: 1px; background: var(--line); margin: 4px 20px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { padding: 9px 8px; text-align: left; border-bottom: 1px solid var(--line); }
+  th { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.me td { font-weight: 640; background: rgba(123,28,43,.07); }
+  tr.playing td:first-child { color: var(--live); }
+  .res td:nth-child(3) { font-family: "Barlow Condensed", sans-serif; font-size: 20px; font-weight: 700; }
+  .fix { width: 100%; border-collapse: collapse; }
+  .fix td { border-bottom: 1px solid var(--line); padding: 12px 4px; vertical-align: middle; }
+  .fix tr:last-child td { border-bottom: 0; }
+  .fix .date { width: 64px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .fix .opp { font-weight: 500; }
+  .fix .comp { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .fix .venue { text-align: right; font-weight: 640; color: var(--ys); }
+  .w { color: #1d7a45; } .d { color: #9a7420; } .l { color: #b42318; }
+  .note { color: var(--muted); font-size: 12px; margin: 8px 0 14px; }
+  a { color: inherit; }
+  @media (max-width: 700px) {
+    header h1 { font-size: 32px; }
+    .score { font-size: 62px; }
+    .team { font-size: 16px; }
+    th:nth-child(n+5):nth-child(-n+7), td:nth-child(n+5):nth-child(-n+7) { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>MALATYA YEŞİLYURTSPOR</h1>
+      <p>Nesine 3. Lig · 3. Grup</p>
+    </div>
+    <div class="clock"><span>İstanbul</span><b id="clock">--:--:--</b></div>
+  </header>
+  <section>
+    <div class="head">
+      <div><small id="comp">Nesine 3. Lig 3. Grup</small><h2>Malatya Yeşilyurtspor</h2></div>
+      <div class="mark">YS</div>
+    </div>
+    <div class="panel">
+      <div class="block">
+        <div class="label"><i class="dot off" id="dot"></i><span id="kicker">Son maç</span></div>
+        <div class="scoreboard">
+          <div class="team" id="home">Yozgat Bld. Bozokspor</div>
+          <div>
+            <div class="score" id="score">1 – 9</div>
+            <div class="min idle" id="min">Maç sonu</div>
+          </div>
+          <div class="team away" id="away">Malatya</div>
+        </div>
+      </div>
+      <div class="split"></div>
+      <div class="block">
+        <div class="label">Son sonuçlar</div>
+        <table class="res"><tbody id="results"></tbody></table>
+      </div>
+      <div class="split"></div>
+      <div class="block">
+        <div class="label">Puan durumu</div>
+        <table>
+          <thead><tr><th>#</th><th>Takım</th><th class="n">O</th><th class="n">G</th><th class="n">B</th><th class="n">M</th><th class="n">A</th><th class="n">Y</th><th class="n">Av</th><th class="n">P</th></tr></thead>
+          <tbody id="table"></tbody>
+        </table>
+      </div>
+      <div class="split"></div>
+      <div class="block">
+        <div class="label">Fikstür</div>
+        <table class="fix">
+          <tbody id="fixtures"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+const FEED = "https://global.flashscore.ninja/726/x/feed/to_KAHHLmc2_nuOluDwH_1";
+const SIGN = "SW9D1eZo";
+const TEAM = "S4biP6R9";
+const FALLBACK = `TR÷1¬TN÷Malatya¬TI÷S4biP6R9¬TM÷5¬TW÷5¬TDR÷0¬TL÷0¬TG÷22:2¬TPF÷20¬TP÷15¬~LMS÷¬LMU÷w¬LMC÷1790985600¬LMF÷1¬LMG÷9¬LMJ÷Yozgat Bld. Bozokspor¬LMK÷Malatya¬~LMS÷¬LMU÷w¬LMC÷1790467200¬LMF÷8¬LMG÷0¬LMJ÷Malatya¬LMK÷Adanaspor¬~LMS÷¬LMU÷w¬LMC÷1789776000¬LMF÷0¬LMG÷1¬LMJ÷Osmaniyespor¬LMK÷Malatya¬~LMS÷¬LMU÷w¬LMC÷1789171200¬LMF÷3¬LMG÷1¬LMJ÷Malatya¬LMK÷Kırıkkale FK¬~LMS÷¬LMU÷w¬LMC÷1788652800¬LMF÷0¬LMG÷1¬LMJ÷Diyarbekirspor¬LMK÷Malatya¬~TR÷2¬TN÷Niğde Bld.¬TM÷5¬TW÷5¬TDR÷0¬TL÷0¬TG÷13:2¬TPF÷11¬TP÷15¬~TR÷3¬TN÷Karaköprü¬TM÷5¬TW÷5¬TDR÷0¬TL÷0¬TG÷13:3¬TPF÷10¬TP÷15¬~TR÷4¬TN÷Mazıdağı¬TM÷5¬TW÷4¬TDR÷1¬TL÷0¬TG÷12:3¬TPF÷9¬TP÷13¬~TR÷5¬TN÷Erciyes 38¬TM÷5¬TW÷4¬TDR÷1¬TL÷0¬TG÷9:4¬TPF÷5¬TP÷13¬~TR÷6¬TN÷Kırşehir FSK¬TM÷5¬TW÷4¬TDR÷0¬TL÷1¬TG÷19:4¬TPF÷15¬TP÷12¬~TR÷7¬TN÷Bitlis 1916¬TM÷5¬TW÷4¬TDR÷0¬TL÷1¬TG÷14:3¬TPF÷11¬TP÷12¬~TR÷8¬TN÷Ağrı 1970¬TM÷5¬TW÷2¬TDR÷1¬TL÷2¬TG÷4:4¬TPF÷0¬TP÷7¬~TR÷9¬TN÷Adana Adaletgucu¬TM÷5¬TW÷2¬TDR÷0¬TL÷3¬TG÷10:10¬TPF÷0¬TP÷6¬~TR÷10¬TN÷Yeni Mersin İdmanyurdu¬TM÷5¬TW÷2¬TDR÷0¬TL÷3¬TG÷5:9¬TPF÷-4¬TP÷6¬~TR÷11¬TN÷Kırıkkale FK¬TM÷5¬TW÷1¬TDR÷1¬TL÷3¬TG÷6:8¬TPF÷-2¬TP÷4¬~TR÷12¬TN÷Silifke¬TM÷5¬TW÷1¬TDR÷1¬TL÷3¬TG÷4:10¬TPF÷-6¬TP÷4¬~TR÷13¬TN÷Osmaniyespor¬TM÷5¬TW÷1¬TDR÷0¬TL÷4¬TG÷7:13¬TPF÷-6¬TP÷3¬~TR÷14¬TN÷Karaman¬TM÷5¬TW÷1¬TDR÷0¬TL÷4¬TG÷4:14¬TPF÷-10¬TP÷3¬~TR÷15¬TN÷Yozgat Bld. Bozokspor¬TM÷5¬TW÷1¬TDR÷0¬TL÷4¬TG÷3:18¬TPF÷-15¬TP÷3¬~TR÷16¬TN÷Diyarbekirspor¬TM÷5¬TW÷0¬TDR÷1¬TL÷4¬TG÷2:8¬TPF÷-6¬TP÷1¬~TR÷17¬TN÷Adanaspor¬TM÷5¬TW÷0¬TDR÷0¬TL÷5¬TG÷3:20¬TPF÷-17¬TP÷0¬~TR÷18¬TN÷Yeni Malatyaspor¬TM÷5¬TW÷0¬TDR÷0¬TL÷5¬TG÷0:15¬TPF÷-15¬TP÷-3¬`;
+
+function fieldsOf(chunk) {
+  const o = {};
+  chunk.split("¬").forEach(pair => {
+    const i = pair.indexOf("÷");
+    if (i > 0) o[pair.slice(0, i)] = pair.slice(i + 1);
+  });
+  return o;
+}
+function parse(text) {
+  const rows = [];
+  let current = null;
+  text.split("~").forEach(chunk => {
+    const f = fieldsOf(chunk);
+    if (f.TR) {
+      const g = (f.TG || "0:0").split(":");
+      current = {
+        id: f.TI || "",
+        name: f.TN,
+        o: Number(f.TM || 0),
+        w: Number(f.TW || 0),
+        d: Number(f.TDR || 0),
+        l: Number(f.TL || 0),
+        gf: Number(g[0] || 0),
+        ga: Number(g[1] || 0),
+        gd: Number(f.TPF || 0),
+        p: Number(f.TP || 0),
+        results: []
+      };
+      rows.push(current);
+    } else if (current && f.LMJ) current.results.push(f);
+  });
+  return { rows };
+}
+const FIX = [
+  { date: "07/10", opp: "Gelecek Siirt", comp: "Türkiye Kupası", venue: "İç saha", stamp: 1791381600 },
+  { date: "17/10", opp: "Bitlis 1916", comp: "3. Lig", venue: "Deplasman", stamp: 1792195200 },
+  { date: "24/10", opp: "Silifke", comp: "3. Lig", venue: "İç saha", stamp: 1792843200 },
+  { date: "01/11", opp: "Karaman", comp: "3. Lig", venue: "Deplasman", stamp: 1793512800 },
+  { date: "07/11", opp: "Kırşehir FSK", comp: "3. Lig", venue: "İç saha", stamp: 1794031200 },
+  { date: "11/11", opp: "Niğde Bld.", comp: "3. Lig", venue: "Deplasman", stamp: 1794376800 },
+  { date: "15/11", opp: "Adana Adaletgucu", comp: "3. Lig", venue: "İç saha", stamp: 1794722400 },
+  { date: "22/11", opp: "Karaköprü", comp: "3. Lig", venue: "Deplasman", stamp: 1795327200 }
+];
+function keyOf(name) {
+  return String(name || "").toLocaleLowerCase("tr-TR").replace(/[^a-z0-9çğıöşü]/g, "");
+}
+function paintFixtures(me) {
+  const done = new Set((me.results || []).filter(r => r.LMU && r.LMU !== "upcoming" && !isLive(r)).map(r => keyOf(r.LMJ === "Malatya" ? r.LMK : r.LMJ)));
+  const live = (me.results || []).filter(isLive);
+  const upcoming = (me.results || []).filter(r => r.LMU === "upcoming");
+  const rows = FIX.filter(f => !done.has(keyOf(f.opp))).map(f => ({ ...f }));
+  upcoming.forEach(r => {
+    const opp = r.LMJ === "Malatya" ? r.LMK : r.LMJ;
+    const venue = r.LMJ === "Malatya" ? "İç saha" : "Deplasman";
+    const date = when(r);
+    const hit = rows.find(f => keyOf(f.opp) === keyOf(opp));
+    if (hit) { hit.date = date || hit.date; hit.venue = venue; hit.stamp = Number(r.LMC) || hit.stamp; }
+    else rows.push({ date, opp, comp: "3. Lig", venue, stamp: Number(r.LMC) || 0 });
+  });
+  live.forEach(r => {
+    const opp = r.LMJ === "Malatya" ? r.LMK : r.LMJ;
+    const hit = rows.find(f => keyOf(f.opp) === keyOf(opp));
+    if (hit) hit.venue = "Canlı";
+  });
+  rows.sort((a, b) => (a.stamp || 0) - (b.stamp || 0));
+  document.getElementById("fixtures").innerHTML = rows.map(f => `<tr><td class="date">${f.date}</td><td><span class="opp">${f.opp}</span><span class="comp">${f.comp}</span></td><td class="venue">${f.venue}</td></tr>`).join("");
+}
+function isLive(r) {
+  const s = (r.LMS || "").trim();
+  return r.LMU === "live" || /^\d/.test(s) || /devam|canlı|iy/i.test(s);
+}
+function outcome(r) {
+  const map = { w: ["w", "Galibiyet"], l: ["l", "Mağlubiyet"], d: ["d", "Beraberlik"] };
+  return map[r.LMU] || ["d", "Beraberlik"];
+}
+function when(r) {
+  if (!r.LMC) return "";
+  const p = new Intl.DateTimeFormat("tr-TR", { timeZone: "Europe/Istanbul", day: "2-digit", month: "2-digit" }).formatToParts(new Date(Number(r.LMC) * 1000));
+  const day = p.find(x => x.type === "day").value;
+  const month = p.find(x => x.type === "month").value;
+  return day + "/" + month;
+}
+function paint(data) {
+  const me = data.rows.find(r => r.id === TEAM) || data.rows.find(r => /malatya$/i.test(r.name) && !/yeni/i.test(r.name));
+  const live = me && me.results.find(isLive);
+  const done = me ? me.results.filter(r => r.LMU !== "upcoming" && !isLive(r) && r.LMF !== "") : [];
+  const card = live || done[0];
+  if (card) {
+    document.getElementById("home").textContent = card.LMJ;
+    document.getElementById("away").textContent = card.LMK;
+    document.getElementById("score").textContent = (card.LMF || "0") + " – " + (card.LMG || "0");
+    document.getElementById("min").textContent = live ? (card.LMS || "Canlı") : "Maç sonu";
+    document.getElementById("min").className = "min" + (live ? "" : " idle");
+    document.getElementById("dot").className = "dot" + (live ? "" : " off");
+    document.getElementById("kicker").textContent = live ? "Canlı maç" : "Son maç";
+  }
+  document.getElementById("results").innerHTML = done.map(r => {
+    const [cls, word] = outcome(r);
+    const opp = r.LMJ === "Malatya" ? r.LMK : r.LMJ;
+    return `<tr><td>${when(r)}</td><td>${opp}</td><td>${r.LMF}-${r.LMG}</td><td class="${cls}">${word}</td></tr>`;
+  }).join("");
+  const playing = new Set();
+  data.rows.forEach(row => row.results.filter(isLive).forEach(() => playing.add(row.name)));
+  document.getElementById("table").innerHTML = data.rows.map((r, i) => {
+    const meCls = r.id === TEAM || r.name === "Malatya" ? " me" : "";
+    const play = playing.has(r.name) ? " playing" : "";
+    return `<tr class="${(meCls + play).trim()}"><td>${i + 1}.</td><td>${r.name === "Malatya" ? "Malatya Yeşilyurtspor" : r.name}</td><td class="n">${r.o}</td><td class="n">${r.w}</td><td class="n">${r.d}</td><td class="n">${r.l}</td><td class="n">${r.gf}</td><td class="n">${r.ga}</td><td class="n">${r.gd}</td><td class="n">${r.p}</td></tr>`;
+  }).join("");
+  if (me) paintFixtures(me);
+}
+async function refresh() {
+  try {
+    const res = await fetch(FEED, { cache: "no-store", headers: { "x-fsign": SIGN } });
+    if (!res.ok) return;
+    const text = await res.text();
+    if (!text.includes("TN")) return;
+    paint(parse(text));
+  } catch (e) {}
+}
+function tick() {
+  document.getElementById("clock").textContent = new Intl.DateTimeFormat("tr-TR", {
+    timeZone: "Europe/Istanbul", hour: "2-digit", minute: "2-digit", second: "2-digit"
+  }).format(new Date());
+}
+paint(parse(FALLBACK));
+tick();
+setInterval(tick, 1000);
+refresh();
+setInterval(refresh, 5000);
+</script>
+</body>
+</html>
