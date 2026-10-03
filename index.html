@@ -18,9 +18,11 @@
     --gold: #e2b15a;
   }
   * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
   body {
     margin: 0;
     overflow-x: hidden;
+    padding-bottom: env(safe-area-inset-bottom);
     font-family: Outfit, "Segoe UI", sans-serif;
     color: var(--ink);
     background:
@@ -78,23 +80,54 @@
   .w { color: #1d7a45; } .d { color: #9a7420; } .l { color: #b42318; }
   .note { color: var(--muted); font-size: 12px; margin: 8px 0 14px; }
   a { color: inherit; }
-  @media (max-width: 700px) {
-    .wrap { width: min(100% - 16px, 980px); padding: 16px 0 40px; }
-    header { align-items: flex-start; }
-    header h1 { font-size: 28px; }
+
+  html { -webkit-text-size-adjust: 100%; }
+  .scoreboard { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
+  .team { min-width: 0; }
+  header h1 { font-size: clamp(28px, 8.4vw, 44px); }
+  table.res, table.fix { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  table.res td, table.fix td { overflow: hidden; }
+  table.res td:nth-child(2), table.fix .opp { overflow: hidden; text-overflow: ellipsis; }
+  table.stand td:nth-child(2) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  @media (max-width: 720px) {
+    body { overflow-x: hidden; }
+    .wrap { width: min(100% - 12px, 980px); padding: 14px 0 calc(28px + env(safe-area-inset-bottom)); }
+    header { align-items: flex-start; gap: 8px; }
+    header h1 { font-size: 26px; letter-spacing: 0; }
+    header p { font-size: 13px; }
     .clock b { font-size: 16px; }
-    .head { padding: 14px; }
-    .head h2 { font-size: 26px; }
-    .mark { width: 38px; height: 38px; }
-    .block { padding: 14px 12px 6px; }
-    .scoreboard { gap: 6px; }
-    .team { font-size: 15px; line-height: 1.15; overflow-wrap: anywhere; }
-    .score { font-size: 52px; }
-    .split { margin: 4px 12px 0; }
+    .clock span { font-size: 10px; letter-spacing: .08em; }
+    .head { padding: 12px 12px; gap: 8px; }
+    .head h2 { font-size: 24px; }
+    .head small { font-size: 10px; letter-spacing: .08em; }
+    .mark { width: 36px; height: 36px; flex: none; }
+    .block { padding: 12px 8px 4px; }
+    .label { letter-spacing: .1em; font-size: 11px; }
+    .scoreboard { gap: 4px; }
+    .team { font-size: 14px; line-height: 1.15; overflow-wrap: anywhere; }
+    .score { font-size: 44px; }
+    .min { font-size: 11px; letter-spacing: .08em; }
+    .split { margin: 4px 8px 0; }
     .scroller { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    table.stand { min-width: 620px; }
-    .res td, .fix td { font-size: 13px; }
-    .fix .venue { font-size: 13px; }
+    table.stand { min-width: 0; width: 100%; font-size: 12px; }
+    table.stand th, table.stand td { padding: 8px 0; }
+    table.stand th:nth-child(1), table.stand td:nth-child(1) { width: 24px; }
+    table.stand th:nth-child(2), table.stand td:nth-child(2) { padding-left: 4px; }
+    table.stand th:nth-child(n+3), table.stand td:nth-child(n+3) { width: 24px; }
+    table.stand th:nth-child(9), table.stand td:nth-child(9) { width: 30px; }
+    table.stand th:last-child, table.stand td:last-child { width: 26px; }
+    table.stand th { font-size: 10px; letter-spacing: 0; }
+    table.res, table.fix { font-size: 13px; }
+    table.res th, table.res td, table.fix th, table.fix td { padding: 10px 2px; }
+    table.res th:nth-child(1), table.res td:nth-child(1),
+    table.fix th:nth-child(1), table.fix td:nth-child(1),
+    .fix .date { width: 46px; }
+    table.res th:nth-child(3), table.res td:nth-child(3) { width: 42px; font-size: 16px; }
+    table.res th:nth-child(4), table.res td:nth-child(4) { width: 72px; font-size: 12px; text-align: right; }
+    table.fix th:nth-child(3), table.fix td:nth-child(3), .fix .venue { width: 78px; font-size: 12px; text-align: right; }
+    table.res td:nth-child(2), table.fix td:nth-child(2) { padding-left: 4px; }
+    .fix .opp, table.fix .opp { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .fix .comp, table.fix .comp { font-size: 11px; }
   }
 </style>
 </head>
