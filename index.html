@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Malatya Yeşilyurtspor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@560;700&family=Outfit:wght@380;500;640&display=swap" rel="stylesheet" />
@@ -20,6 +20,7 @@
   * { box-sizing: border-box; }
   body {
     margin: 0;
+    overflow-x: hidden;
     font-family: Outfit, "Segoe UI", sans-serif;
     color: var(--ink);
     background:
@@ -58,7 +59,12 @@
   table { width: 100%; border-collapse: collapse; font-size: 14px; }
   th, td { padding: 9px 8px; text-align: left; border-bottom: 1px solid var(--line); }
   th { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
-  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+  table.stand { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  table.stand th, table.stand td { padding: 9px 0; text-align: center; font-variant-numeric: tabular-nums; }
+  table.stand th:nth-child(1), table.stand td:nth-child(1) { width: 42px; }
+  table.stand th:nth-child(2), table.stand td:nth-child(2) { text-align: left; padding-left: 8px; }
+  table.stand th:nth-child(n+3), table.stand td:nth-child(n+3) { width: 46px; }
+  .scroller { width: 100%; }
   tr.me td { font-weight: 640; background: rgba(123,28,43,.07); }
   tr.playing td:first-child { color: var(--live); }
   .res td:nth-child(3) { font-family: "Barlow Condensed", sans-serif; font-size: 20px; font-weight: 700; }
@@ -73,10 +79,22 @@
   .note { color: var(--muted); font-size: 12px; margin: 8px 0 14px; }
   a { color: inherit; }
   @media (max-width: 700px) {
-    header h1 { font-size: 32px; }
-    .score { font-size: 62px; }
-    .team { font-size: 16px; }
-    th:nth-child(n+5):nth-child(-n+7), td:nth-child(n+5):nth-child(-n+7) { display: none; }
+    .wrap { width: min(100% - 16px, 980px); padding: 16px 0 40px; }
+    header { align-items: flex-start; }
+    header h1 { font-size: 28px; }
+    .clock b { font-size: 16px; }
+    .head { padding: 14px; }
+    .head h2 { font-size: 26px; }
+    .mark { width: 38px; height: 38px; }
+    .block { padding: 14px 12px 6px; }
+    .scoreboard { gap: 6px; }
+    .team { font-size: 15px; line-height: 1.15; overflow-wrap: anywhere; }
+    .score { font-size: 52px; }
+    .split { margin: 4px 12px 0; }
+    .scroller { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    table.stand { min-width: 620px; }
+    .res td, .fix td { font-size: 13px; }
+    .fix .venue { font-size: 13px; }
   }
 </style>
 </head>
@@ -114,10 +132,12 @@
       <div class="split"></div>
       <div class="block">
         <div class="label">Puan durumu</div>
-        <table>
+        <div class="scroller">
+        <table class="stand">
           <thead><tr><th>#</th><th>Takım</th><th class="n">O</th><th class="n">G</th><th class="n">B</th><th class="n">M</th><th class="n">A</th><th class="n">Y</th><th class="n">Av</th><th class="n">P</th></tr></thead>
           <tbody id="table"></tbody>
         </table>
+        </div>
       </div>
       <div class="split"></div>
       <div class="block">
